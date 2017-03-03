@@ -71,7 +71,8 @@ app = Flask(__name__)
 # The value is the help message sent for the command
 commands = {
     "/echo": "Reply back with the same message sent.",
-    "/help": "Get help."
+    "/help": "Get help.",
+    "/chuck": "Get a random Chuck Norris Joke."
 }
 
 
@@ -218,6 +219,8 @@ def process_incoming_message(post_data):
         reply = send_help(post_data)
     elif command in ["/echo"]:
         reply = send_echo(message)
+    elif command in ["/chuck"]:
+        reply = chuck_joke()
 
     # send_message_to_room(room_id, reply)
     spark.messages.create(roomId=room_id, markdown=reply)
@@ -229,6 +232,17 @@ def send_echo(incoming):
     message = extract_message("/echo", incoming.text)
     return message
 
+
+def chuck_joke():
+    # Use urllib to get a random joke
+    import urllib2
+
+    response = urllib2.urlopen('http://api.icndb.com/jokes/random')
+    joke = json.loads(response.read())["value"]["joke"]
+
+    # Return the text of the joke
+    return joke
+    
 
 # Construct a help message for users.
 def send_help(post_data):
