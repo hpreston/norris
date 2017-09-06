@@ -215,11 +215,11 @@ def process_incoming_message(post_data):
     reply = ""
     # Take action based on command
     # If no command found, send help
-    if command in ["", "/help"]:
+    if command in ["/help"]:
         reply = send_help(post_data)
     elif command in ["/echo"]:
         reply = send_echo(message)
-    elif command in ["/chuck"]:
+    elif command in ["", "/chuck"]:
         reply = chuck_joke()
 
     # send_message_to_room(room_id, reply)
